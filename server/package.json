@@ -2,10 +2,12 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "module": "module",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
-    "build": "tsc && tsc-alias"
+    "build": "tsc && tsc-alias",
+    "jsdev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,7 @@
     "@types/node": "^22.15.29",
     "@types/socket.io": "^3.0.1",
     "drizzle-kit": "^0.31.1",
+    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.16",
@@ -24,6 +27,8 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/amqplib": "^0.10.7",
+    "amqplib": "^0.10.8",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.44.1",
     "express": "^5.1.0",
