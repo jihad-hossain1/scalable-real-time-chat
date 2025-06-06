@@ -6,8 +6,15 @@ const socketHandler = require("./socket");
 const { consumeMessages } = require("./queue");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
+
+app.use("/api/messages", require("./routes/message.route"));
+app.use("/api/users", require("./routes/user.route"));
 
 const server = http.createServer(app);
 const io = new Server(server, {
