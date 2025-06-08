@@ -1,6 +1,9 @@
 import { MessageCircle } from "lucide-react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
 
 export const Header = () => {
+  const { name } = useSelector((state: RootState) => state.auth);
   return (
     <div className="p-6 border-b border-gray-200">
       <div className="flex items-center space-x-3">
@@ -10,6 +13,11 @@ export const Header = () => {
         <div>
           <h1 className="text-xl font-semibold text-gray-900">ChatApp</h1>
           <p className="text-sm text-gray-500">Professional Messaging</p>
+          <p className="">
+            <span className="bg-blue-100 text-xs  px-3 py-1 rounded text-nowrap">
+              {name}
+            </span>
+          </p>
         </div>
       </div>
     </div>

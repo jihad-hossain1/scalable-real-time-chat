@@ -1,6 +1,6 @@
 const { db } = require("../lib/db");
-const { messageTable } = require("../lib/db/schema");
-const { eq, and } = require("drizzle-orm");
+const { messageTable, userConversationTable } = require("../lib/db/schema");
+const { eq, and, or } = require("drizzle-orm");
 
 async function getOneToOneMessage(req, res) {
   const { senderId, receiverId, page } = req.query;
@@ -10,16 +10,30 @@ async function getOneToOneMessage(req, res) {
   const offset = (pageNumber - 1) * pageSize;
 
   try {
+    const findChatId = await db
+      .select()
+      .from(userConversationTable)
+      .where(
+        or(
+          and(
+            eq(userConversationTable.user_id, senderId),
+            eq(userConversationTable.receiver_id, receiverId)
+          ),
+          and(
+            eq(userConversationTable.user_id, receiverId),
+            eq(userConversationTable.receiver_id, senderId)
+          )
+        )
+      );
+
+    if (findChatId.length == 0) {
+      return res.status(200).json([]);
+    }
+
     const messages = await db
       .select()
       .from(messageTable)
-      .where(
-        and(
-          eq(messageTable.sender_id, Number(senderId)),
-          eq(messageTable.receiver_id, Number(receiverId))
-        )
-      );
-    console.log("🚀 ~ getOneToOneMessage ~ messages:", messages);
+      .where(eq(messageTable.chat_id, findChatId[0].conversation_id));
     // .limit(pageSize)
     // .offset(offset);
     // .orderBy(messageTable.timestamp, "desc");

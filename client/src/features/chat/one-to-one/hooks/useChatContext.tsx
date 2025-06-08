@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { ChatContext } from "../context/ChatContext";
+import type { TUser } from "../types";
 
 export const useChatContext = () => {
   const { state, dispatch } = useContext(ChatContext);
-  const { receiverId, userId } = state;
+  const { receiverId } = state;
 
   const messages = React.useMemo(() => state.messages, [state.messages]);
 
@@ -42,13 +43,29 @@ export const useChatContext = () => {
     });
   }, []);
 
+  const updateIsSidebar = React.useCallback((isOpen: boolean) => {
+    dispatch({
+      type: "UPDATE_STATE",
+      payload: { isSidebarOpen: isOpen },
+    });
+  }, []);
+
+  const updateSelectedUser = React.useCallback((user: TUser) => {
+    dispatch({
+      type: "UPDATE_STATE",
+      payload: { selectedUser: user },
+    });
+  }, []);
+
   return {
     messages,
     updateSearch,
     resetFilter,
     updateReciverId,
     receiverId,
-    userId,
     updateIsChatSelect,
+    updateIsSidebar,
+    updateSelectedUser,
+    selectedUser: state.selectedUser,
   };
 };

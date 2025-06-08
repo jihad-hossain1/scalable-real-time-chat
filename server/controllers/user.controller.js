@@ -31,8 +31,6 @@ async function getUser(req, res) {
         .where(ne(userTable.id, Number(loggedUserId))) // Use ne instead of not
         .limit(pageSize)
         .offset(offset);
-
-      console.log("🚀 ~ getUser ~ users:", users);
     }
 
     res.send(users);

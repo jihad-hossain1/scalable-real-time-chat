@@ -9,6 +9,8 @@ const initialState: State = {
     query: "",
   },
   isChatUserSelect: false,
+  isSidebarOpen: false,
+  selectedUser: null,
 };
 
 const reducer = (state: State, action: Action): State => {

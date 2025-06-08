@@ -1,7 +1,8 @@
 const amqp = require("amqplib");
 const { db } = require("./lib/db");
 const { messageTable, userConversationTable } = require("./lib/db/schema");
-const { and, eq } = require("drizzle-orm");
+const { and, eq, or } = require("drizzle-orm");
+const { sanitizeText } = require("./utils/sanitizeText");
 
 let channel = null;
 
@@ -29,9 +30,15 @@ async function consumeMessages() {
         .select()
         .from(userConversationTable)
         .where(
-          and(
-            eq(userConversationTable.user_id, data.sender_id),
-            eq(userConversationTable.receiver_id, data.receiver_id)
+          or(
+            and(
+              eq(userConversationTable.user_id, data.sender_id),
+              eq(userConversationTable.receiver_id, data.receiver_id)
+            ),
+            and(
+              eq(userConversationTable.user_id, data.receiver_id),
+              eq(userConversationTable.receiver_id, data.sender_id)
+            )
           )
         );
 
@@ -50,30 +57,18 @@ async function consumeMessages() {
         chatId = chatIdExists[0].conversation_id;
       }
 
-      console.log("🚀 ~ consumeMessages ~ chatId:", chatId);
-
       // if yes, insert message into db
+      const cleanContent = sanitizeText(msg.content);
 
       await db.insert(messageTable).values({
         sender_id: data.sender_id,
         receiver_id: data.receiver_id || null,
         group_id: data.group_id || null,
-        content: data.content,
+        content: cleanContent,
         chat_id: chatId,
         timestamp: new Date(),
       });
 
-      // await db.insert(usersTable).values(user);
-
-      // query(
-      //   "INSERT INTO messages (sender_id, receiver_id, group_id, content) VALUES (?, ?, ?, ?)",
-      //   [
-      //     data.sender_id,
-      //     data.receiver_id || null,
-      //     data.group_id || null,
-      //     data.content,
-      //   ]
-      // );
       channel.ack(msg);
     }
   });

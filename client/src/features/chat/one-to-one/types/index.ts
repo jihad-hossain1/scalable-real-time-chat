@@ -22,6 +22,8 @@ export type State = {
   // userId?: number | string;
   receiverId?: number | null;
   isChatUserSelect?: boolean;
+  isSidebarOpen?: boolean;
+  selectedUser?: TUser | null;
 };
 
 export type SEtStateAction = {

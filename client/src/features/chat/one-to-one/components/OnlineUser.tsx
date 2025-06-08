@@ -18,7 +18,9 @@ const useDebounce = (value: string, delay: number) => {
 };
 
 export const OnlineUser = () => {
-  const { updateReciverId, updateIsChatSelect } = useChatContext();
+  const { updateReciverId, updateIsChatSelect, updateSelectedUser } =
+    useChatContext();
+  // const {state} = useContext(ChatContext)
   const { id: loggedUserId } = useSelector((state: RootState) => state.auth);
   const [onlineUsers, setOnlineUsers] = useState<TUser[]>([]);
   const [query, setQuery] = useState<string>("");
@@ -54,6 +56,7 @@ export const OnlineUser = () => {
   const handleClick = (isUser: TUser | null) => {
     updateReciverId(Number(isUser?.id!));
     updateIsChatSelect(true);
+    updateSelectedUser(isUser!);
   };
 
   return (
