@@ -1,6 +1,9 @@
 import { Circle, Users } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useChatContext } from "../hooks/useChatContext";
+import type { TUser } from "../types";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
 
 // Debounce hook
 const useDebounce = (value: string, delay: number) => {
@@ -15,10 +18,9 @@ const useDebounce = (value: string, delay: number) => {
 };
 
 export const OnlineUser = () => {
-  const { updateReciverId } = useChatContext();
-  const [onlineUsers, setOnlineUsers] = useState<
-    { name: string; id: number }[]
-  >([]);
+  const { updateReciverId, updateIsChatSelect } = useChatContext();
+  const { id: loggedUserId } = useSelector((state: RootState) => state.auth);
+  const [onlineUsers, setOnlineUsers] = useState<TUser[]>([]);
   const [query, setQuery] = useState<string>("");
   const [isSearchSelected, setIsSearchSelected] = useState<boolean>(false);
 
@@ -27,7 +29,7 @@ export const OnlineUser = () => {
   const fetchOnlineUsers = useCallback(async (search = "") => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/users?query=${search}`
+        `http://localhost:8000/api/users?query=${search}&loggedUserId=${loggedUserId}`
       );
       const data = await res.json();
       console.log(data);
@@ -49,8 +51,9 @@ export const OnlineUser = () => {
     }
   }, [debouncedQuery, fetchOnlineUsers, isSearchSelected]);
 
-  const handleClick = (isUser: { id: number; name: string } | null) => {
+  const handleClick = (isUser: TUser | null) => {
     updateReciverId(Number(isUser?.id!));
+    updateIsChatSelect(true);
   };
 
   return (

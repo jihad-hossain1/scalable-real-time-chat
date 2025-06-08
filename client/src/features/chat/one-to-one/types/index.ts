@@ -19,8 +19,9 @@ export type State = {
     query?: string;
   };
 
-  userId?: number | string;
+  // userId?: number | string;
   receiverId?: number | null;
+  isChatUserSelect?: boolean;
 };
 
 export type SEtStateAction = {

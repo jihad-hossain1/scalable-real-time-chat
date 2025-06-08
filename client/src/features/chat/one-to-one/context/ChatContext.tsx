@@ -4,11 +4,11 @@ import type { Action, State } from "../types";
 const initialState: State = {
   messages: [],
   onlineUsers: [],
-  userId: 1,
   receiverId: null,
   filter: {
     query: "",
   },
+  isChatUserSelect: false,
 };
 
 const reducer = (state: State, action: Action): State => {

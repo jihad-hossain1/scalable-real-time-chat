@@ -2,6 +2,9 @@ import { Circle, Send } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useChatContext } from "../hooks/useChatContext";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../../redux/store";
+
 const SOCKET_URL = "http://localhost:8000";
 
 export type Message = {
@@ -13,7 +16,8 @@ export type Message = {
 };
 
 export const MainChatArea = () => {
-  const { userId, receiverId } = useChatContext();
+  const { receiverId } = useChatContext();
+  const { id: userId } = useSelector((state: RootState) => state.auth);
 
   const socket = useRef<Socket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -26,6 +30,7 @@ export const MainChatArea = () => {
     );
     const data = await response.json();
     console.log("🚀 ~ fetchMessage ~ data:", data);
+
     setMessages(data);
   }, [userId, receiverId]);
 
@@ -49,7 +54,7 @@ export const MainChatArea = () => {
     };
   }, [userId]);
 
-  const sendMessage = (e?: React.FormEvent) => {
+  const sendMessage = (e: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!input.trim()) return;
 
@@ -93,7 +98,9 @@ export const MainChatArea = () => {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((message, index) => {
-          const isOwnMessage = message.sender_id === userId;
+          const isOwnMessage = message.sender_id == userId;
+          // const isReciverMessage = message.receiver_id == receiverId;
+
           return (
             <div
               key={index}

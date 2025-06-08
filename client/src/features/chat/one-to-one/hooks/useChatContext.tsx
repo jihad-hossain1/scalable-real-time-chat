@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { ChatContext } from "../context/ChatContext";
+
 export const useChatContext = () => {
   const { state, dispatch } = useContext(ChatContext);
   const { receiverId, userId } = state;
@@ -34,6 +35,13 @@ export const useChatContext = () => {
     });
   }, []);
 
+  const updateIsChatSelect = React.useCallback((isSelect: boolean) => {
+    dispatch({
+      type: "UPDATE_STATE",
+      payload: { isChatUserSelect: isSelect },
+    });
+  }, []);
+
   return {
     messages,
     updateSearch,
@@ -41,5 +49,6 @@ export const useChatContext = () => {
     updateReciverId,
     receiverId,
     userId,
+    updateIsChatSelect,
   };
 };

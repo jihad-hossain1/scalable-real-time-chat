@@ -3,7 +3,11 @@ const { messageTable } = require("../lib/db/schema");
 const { eq, and } = require("drizzle-orm");
 
 async function getOneToOneMessage(req, res) {
-  const { senderId, receiverId } = req.query;
+  const { senderId, receiverId, page } = req.query;
+
+  const pageNumber = Number(page) || 1;
+  const pageSize = 30;
+  const offset = (pageNumber - 1) * pageSize;
 
   try {
     const messages = await db
@@ -15,6 +19,10 @@ async function getOneToOneMessage(req, res) {
           eq(messageTable.receiver_id, Number(receiverId))
         )
       );
+    console.log("🚀 ~ getOneToOneMessage ~ messages:", messages);
+    // .limit(pageSize)
+    // .offset(offset);
+    // .orderBy(messageTable.timestamp, "desc");
 
     res.send(messages);
   } catch (error) {

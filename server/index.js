@@ -15,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/messages", require("./routes/message.route"));
 app.use("/api/users", require("./routes/user.route"));
+app.use("/api/auth", require("./routes/auth.route"));
 
 const server = http.createServer(app);
 const io = new Server(server, {

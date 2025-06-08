@@ -23,10 +23,20 @@ const messageTable = mysqlTable("messages", {
     .references(() => userTable.id),
   group_id: int(), // Optional: .references(() => groupTable.id)
   content: text().notNull(),
+  chat_id: varchar({ length: 30 }),
+  timestamp: timestamp().defaultNow(),
+});
+
+const userConversationTable = mysqlTable("user_conversations", {
+  id: int().autoincrement().primaryKey(),
+  user_id: int().notNull(),
+  receiver_id: int().notNull(),
+  conversation_id: varchar({ length: 30 }),
   timestamp: timestamp().defaultNow(),
 });
 
 module.exports = {
   userTable,
   messageTable,
+  userConversationTable,
 };

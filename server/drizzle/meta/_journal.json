@@ -8,6 +8,20 @@
       "when": 1749215068444,
       "tag": "0000_last_night_nurse",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1749373938381,
+      "tag": "0001_open_jocasta",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1749374001542,
+      "tag": "0002_cynical_loki",
+      "breakpoints": true
     }
   ]
 }

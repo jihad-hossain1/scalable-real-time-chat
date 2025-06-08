@@ -30,9 +30,11 @@
   "dependencies": {
     "@types/amqplib": "^0.10.7",
     "amqplib": "^0.10.8",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.44.1",
     "express": "^5.1.0",
+    "jose": "^6.0.11",
     "mysql2": "^3.14.1",
     "socket.io": "^4.8.1"
   }
