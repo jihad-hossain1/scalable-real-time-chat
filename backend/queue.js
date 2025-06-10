@@ -58,13 +58,13 @@ async function consumeMessages() {
       }
 
       // if yes, insert message into db
-      const cleanContent = sanitizeText(msg.content);
+      // const cleanContent = sanitizeText(msg.content);
 
       await db.insert(messageTable).values({
         sender_id: data.sender_id,
         receiver_id: data.receiver_id || null,
         group_id: data.group_id || null,
-        content: cleanContent,
+        content: data.content,
         chat_id: chatId,
         timestamp: new Date(),
       });

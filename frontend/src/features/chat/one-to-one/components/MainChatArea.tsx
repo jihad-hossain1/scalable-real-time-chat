@@ -1,9 +1,11 @@
-import { Circle, DotSquareIcon, EllipsisVertical, Send } from "lucide-react";
+import { Circle, EllipsisVertical, Send } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useChatContext } from "../hooks/useChatContext";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
+import { ChatAction } from "./actions/ChatAction";
+import { CallAction } from "./actions/CallAction";
 
 const SOCKET_URL = "http://localhost:8000";
 
@@ -106,10 +108,9 @@ export const MainChatArea = () => {
             </p>
           </div>
         </div>
-        <div>
-          <button>
-            <EllipsisVertical />
-          </button>
+        <div className="flex gap-6 items-center">
+          <CallAction />
+          <ChatAction />
         </div>
       </div>
 
@@ -117,8 +118,6 @@ export const MainChatArea = () => {
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((message, index) => {
           const isOwnMessage = message.sender_id == userId;
-          // const isReciverMessage = message.receiver_id == receiverId;
-
           return (
             <div
               key={index}
@@ -127,7 +126,7 @@ export const MainChatArea = () => {
               }`}
             >
               <div
-                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-md ${
+                className={`max-w-xs lg:max-w-md px-3 py-0.5 rounded-md ${
                   isOwnMessage
                     ? "bg-blue-100  rounded-br-md text-right"
                     : "bg-white text-gray-800 text-start rounded-bl-md shadow-sm border border-gray-100"
