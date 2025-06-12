@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -8,4 +8,8 @@ RUN npm install
 COPY . .
 
 EXPOSE 8000
-CMD ["npm", "start"]
+# CMD ["npm", "run", "dev"]
+# CMD ["sh", "-c", "npx wait-on tcp:db:3306 && npm run dev"]
+CMD ["sh", "-c", "npx wait-on tcp:db:3306 && npm run drizzle:generate && npm run dev"]
+
+

@@ -40,6 +40,16 @@ To rebuild only backend or frontend:
 podman-compose build backend
 ```
 
+Database:
+run on browser
+
+```bash
+http://localhost:8081
+user: user
+password: password
+
+```
+
 Here is the **port and URL list** for each service in your fullstack Podman Compose setup:
 
 ---

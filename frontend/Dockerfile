@@ -9,3 +9,4 @@ COPY . .
 
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
+# CMD ["sh", "-c", "npx wait-on tcp:db:3306 && npm run dev"]

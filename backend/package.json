@@ -5,7 +5,12 @@
   "module": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "drizzle:generate": "drizzle-kit generate",
+    "drizzle:migrate": "drizzle-kit push",
+    "drizzle:pull": "drizzle-kit pull",
+    "drizzle:seed": "drizzle-kit seed",
+    "drizzle:push": "drizzle-kit push"
   },
   "keywords": [],
   "author": "",

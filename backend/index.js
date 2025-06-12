@@ -25,7 +25,11 @@ const io = new Server(server, {
 });
 
 socketHandler(io);
-consumeMessages();
+try {
+  consumeMessages();
+} catch (error) {
+  console.error("<<<---- Rabbitmq server start failed ---->>>", error?.message);
+}
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
