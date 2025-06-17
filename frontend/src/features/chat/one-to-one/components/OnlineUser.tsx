@@ -4,6 +4,7 @@ import { useChatContext } from "../hooks/useChatContext";
 import type { TUser } from "../types";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
+import io from "socket.io-client";
 
 // Debounce hook
 const useDebounce = (value: string, delay: number) => {
@@ -58,6 +59,23 @@ export const OnlineUser = () => {
     updateIsChatSelect(true);
     updateSelectedUser(isUser!);
   };
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000");
+    socket.emit("register", loggedUserId);
+
+    socket.on("presence", (userIds: string[]) => {
+      // Update online status for users
+      setOnlineUsers(prev => prev.map(user => ({
+        ...user,
+        isOnline: userIds.includes(String(user.id))
+      })));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [loggedUserId]);
 
   return (
     <div className="p-4 border-b border-gray-200">

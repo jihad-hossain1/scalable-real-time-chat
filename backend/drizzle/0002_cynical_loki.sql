@@ -1,1 +1,0 @@
-ALTER TABLE `messages` ADD `chat_id` varchar(30);

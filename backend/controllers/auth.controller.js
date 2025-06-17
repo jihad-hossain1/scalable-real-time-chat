@@ -2,6 +2,13 @@ const bcrypt = require("bcrypt");
 const { db } = require("../lib/db");
 const { userTable } = require("../lib/db/schema");
 const { eq, and } = require("drizzle-orm");
+// Replace require with dynamic import
+let SignJWT;
+(async () => {
+  const jose = await import('jose');
+  SignJWT = jose.SignJWT;
+})();
+
 
 async function register(req, res) {
   const { name, password, email } = req.body;
@@ -41,7 +48,6 @@ async function register(req, res) {
   }
 }
 
-const { SignJWT } = require("jose");
 
 async function login(req, res) {
   const { email, password } = req.body;

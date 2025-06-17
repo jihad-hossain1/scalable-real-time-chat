@@ -15,9 +15,18 @@ function socketHandler(io) {
       if (receiverSocket) io.to(receiverSocket).emit("private_message", msg);
     });
 
-    socket.on("group_message", async (msg) => {
-      publishMessage(msg);
-      io.emit(`group_${msg.group_id}`, msg);
+    socket.on("typing", ({ senderId, receiverId }) => {
+      const receiverSocket = users[receiverId];
+      if (receiverSocket) {
+        io.to(receiverSocket).emit("typing", senderId);
+      }
+    });
+
+    socket.on("stop typing", ({ senderId, receiverId }) => {
+      const receiverSocket = users[receiverId];
+      if (receiverSocket) {
+        io.to(receiverSocket).emit("stop typing", senderId);
+      }
     });
 
     socket.on("disconnect", () => {

@@ -2,7 +2,7 @@
  * Sanitizes user input to prevent XSS and script injection.
  * Strips out <script>, <iframe>, <object>, inline events (onclick=...), and dangerous tags.
  */
-export function sanitizeText(content) {
+ function sanitizeText(content) {
   //   if (!content) return "";
 
   //   // Remove <script>, <iframe>, <object>, and other potentially dangerous tags
@@ -38,4 +38,8 @@ export function sanitizeText(content) {
   } catch (error) {
     return content;
   }
+}
+
+module.exports = {
+  sanitizeText
 }

@@ -1,9 +1,19 @@
+CREATE TABLE `users` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`password` varchar(255) NOT NULL,
+	`email` varchar(255) NOT NULL,
+	CONSTRAINT `users_id` PRIMARY KEY(`id`),
+	CONSTRAINT `users_email_unique` UNIQUE(`email`)
+);
+--> statement-breakpoint
 CREATE TABLE `messages` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`sender_id` int NOT NULL,
 	`receiver_id` int NOT NULL,
 	`group_id` int,
 	`content` text NOT NULL,
+	`chat_id` varchar(30),
 	`timestamp` timestamp DEFAULT (now()),
 	CONSTRAINT `messages_id` PRIMARY KEY(`id`)
 );
@@ -17,6 +27,5 @@ CREATE TABLE `user_conversations` (
 	CONSTRAINT `user_conversations_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-ALTER TABLE `users` MODIFY COLUMN `id` int AUTO_INCREMENT NOT NULL;--> statement-breakpoint
 ALTER TABLE `messages` ADD CONSTRAINT `messages_sender_id_users_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `messages` ADD CONSTRAINT `messages_receiver_id_users_id_fk` FOREIGN KEY (`receiver_id`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;
