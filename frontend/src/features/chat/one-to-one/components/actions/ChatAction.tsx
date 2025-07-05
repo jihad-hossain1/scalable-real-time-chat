@@ -1,7 +1,4 @@
 import { EllipsisVertical } from "lucide-react";
-import { useChatContext } from "../../hooks/useChatContext";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../../../redux/store";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,8 +10,6 @@ import React from "react";
 import { Profile } from "./Profile";
 
 export const ChatAction = () => {
-  const { selectedUser } = useChatContext();
-  const { id: userId } = useSelector((state: RootState) => state.auth);
   const [isOpen, setIsOpen] = React.useState(false);
   return (
     <>

@@ -4,6 +4,7 @@ import { useChatContext } from "../hooks/useChatContext";
 import type { TUser } from "../types";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
+import { api_url } from "../../../../env";
 
 // Debounce hook
 const useDebounce = (value: string, delay: number) => {
@@ -31,7 +32,7 @@ export const OnlineUser = () => {
   const fetchOnlineUsers = useCallback(async (search = "") => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/users?query=${search}&loggedUserId=${loggedUserId}`
+        `${api_url}/users?query=${search}&loggedUserId=${loggedUserId}`
       );
       const data = await res.json();
       console.log(data);

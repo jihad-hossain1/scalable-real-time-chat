@@ -46,7 +46,7 @@ const Dialog: React.FC<DialogProps> = ({
 };
 
 const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
-  ({ children, className = "", onClose, ...props }, ref) => {
+  ({ children, className = "", onClose, ...props }) => {
     const { open, onOpenChange } = useDialog();
     const contentRef = useRef<HTMLDivElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);

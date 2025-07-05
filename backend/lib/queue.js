@@ -1,8 +1,7 @@
 const amqp = require("amqplib");
-const { db } = require("./lib/db");
-const { messageTable, userConversationTable } = require("./lib/db/schema");
+const { db } = require("./db");
+const { messageTable, userConversationTable } = require("./db/schema");
 const { and, eq, or } = require("drizzle-orm");
-const { sanitizeText } = require("./utils/sanitizeText");
 
 const RABBITMQ_HOST = process.env.RABBITMQ_HOST || "localhost";
 const RABBITMQ_USER = process.env.RABBITMQ_USER || "guest";

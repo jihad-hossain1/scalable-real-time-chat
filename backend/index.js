@@ -2,8 +2,8 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const socketHandler = require("./socket");
-const { consumeMessages } = require("./queue");
+const socketHandler = require("./lib/socket");
+const { consumeMessages } = require("./lib/queue");
 
 const app = express();
 app.use(
@@ -13,9 +13,9 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/api/messages", require("./routes/message.route"));
-app.use("/api/users", require("./routes/user.route"));
-app.use("/api/auth", require("./routes/auth.route"));
+app.use("/api/v1/messages", require("./routes/message.route"));
+app.use("/api/v1/users", require("./routes/user.route"));
+app.use("/api/v1/auth", require("./routes/auth.route"));
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -31,5 +31,5 @@ try {
   console.error("<<<---- Rabbitmq server start failed ---->>>", error?.message);
 }
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

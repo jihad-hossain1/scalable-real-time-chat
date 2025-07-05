@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "drizzle:generate": "drizzle-kit generate",
-    "drizzle:migrate": "drizzle-kit push",
-    "drizzle:pull": "drizzle-kit pull",
-    "drizzle:seed": "drizzle-kit seed",
-    "drizzle:push": "drizzle-kit push"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit push",
+    "db:pull": "drizzle-kit pull",
+    "db:seed": "drizzle-kit seed",
+    "db:push": "drizzle-kit push"
   },
   "keywords": [],
   "author": "",

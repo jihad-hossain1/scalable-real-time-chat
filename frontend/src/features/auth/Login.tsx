@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { loggedUser } from "../../redux/features/authSlice";
+import { api_url } from "../../env";
 
 export const Login = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export const Login = () => {
       setIsLoading(true);
       if (isLogin) {
         // Login logic
-        const response = await fetch("http://localhost:8000/api/auth/login", {
+        const response = await fetch(`${api_url}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -85,20 +86,17 @@ export const Login = () => {
         // Register logic
         setIsLoading(true);
 
-        const response = await fetch(
-          "http://localhost:8000/api/auth/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: formData.name,
-              email: formData.email,
-              password: formData.password,
-            }),
-          }
-        );
+        const response = await fetch(`${api_url}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
 
         setIsLoading(false);
 

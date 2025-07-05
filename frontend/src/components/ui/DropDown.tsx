@@ -188,7 +188,6 @@ export const DropdownMenuTrigger: React.FC<DropdownMenuTriggerProps> = ({
 // Updated DropdownMenuContent with position-based styling
 export const DropdownMenuContent: React.FC<DropdownMenuContentProps> = ({
   children,
-  sideOffset = 0,
 }) => {
   const { isOpen, position, dropdownPosition } = useDropdown();
   const contentRef = useRef<HTMLDivElement>(null);

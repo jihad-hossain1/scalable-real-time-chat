@@ -1,4 +1,4 @@
-import { Circle, EllipsisVertical, Send } from "lucide-react";
+import { Circle, Send } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useChatContext } from "../hooks/useChatContext";
@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../../redux/store";
 import { ChatAction } from "./actions/ChatAction";
 import { CallAction } from "./actions/CallAction";
-
-const SOCKET_URL = "http://localhost:8000";
+import { api_url, socket_url } from "../../../../env";
 
 export type Message = {
   id?: number;
@@ -20,7 +19,6 @@ export type Message = {
 export const MainChatArea = () => {
   const { receiverId, selectedUser } = useChatContext();
   const { id: userId } = useSelector((state: RootState) => state.auth);
-  const [page, setPage] = useState(1);
 
   const socket = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -40,7 +38,7 @@ export const MainChatArea = () => {
   const fetchMessage = useCallback(async () => {
     if (!userId || !receiverId) return;
     const response = await fetch(
-      `${SOCKET_URL}/api/messages?senderId=${userId}&receiverId=${receiverId}`
+      `${api_url}/messages?senderId=${userId}&receiverId=${receiverId}`
     );
     const data = await response.json();
 
@@ -52,7 +50,7 @@ export const MainChatArea = () => {
   }, [userId, receiverId, fetchMessage]);
 
   useEffect(() => {
-    socket.current = io(SOCKET_URL);
+    socket.current = io(socket_url);
 
     socket.current.emit("register", userId);
 
@@ -133,11 +131,7 @@ export const MainChatArea = () => {
                 }`}
               >
                 <p className="text-sm leading-relaxed">{message.content}</p>
-                <p
-                  className={`text-xs mt-1 ${
-                    isOwnMessage ? "text-blue-100" : "text-gray-500"
-                  }`}
-                >
+                <p className={`text-xs mt-1 text-gray-500`}>
                   {message.timestamp ? formatTime(message.timestamp) : "Now"}
                 </p>
               </div>
