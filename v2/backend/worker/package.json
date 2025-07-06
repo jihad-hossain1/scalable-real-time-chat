@@ -1,0 +1,33 @@
+{
+  "name": "chat-worker",
+  "version": "1.0.0",
+  "description": "Message processing worker for real-time chat application",
+  "main": "src/worker.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/worker.js",
+    "dev": "nodemon src/worker.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "worker",
+    "rabbitmq",
+    "message-processing"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.1",
+    "postgres": "^3.4.3",
+    "redis": "^4.6.10",
+    "uuid": "^9.0.1",
+    "joi": "^17.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "drizzle-kit": "^0.20.6"
+  }
+}
