@@ -9,6 +9,9 @@ import {
   changePasswordSchema,
 } from "../validation/schemas.js";
 
+import { db, users } from "../models/db.js";
+import { ilike, or } from "drizzle-orm";
+
 class AuthController {
   // Register new user
   async register(req, res) {
@@ -253,20 +256,7 @@ class AuthController {
   // Search users
   async searchUsers(req, res) {
     try {
-      const { search, limit = 10 } = req.query;
-
-      if (!search || search.trim().length < 2) {
-        return res.status(400).json({
-          success: false,
-          error: "Search query must be at least 2 characters",
-          code: "INVALID_SEARCH_QUERY",
-        });
-      }
-
-      // This would typically use a full-text search or database query
-      // For now, we'll implement a basic search
-      const { db, users } = await import("../models/db.js");
-      const { ilike, or } = await import("drizzle-orm");
+      const { query, limit = 10 } = req.query;
 
       const searchResults = await db
         .select({
@@ -279,11 +269,16 @@ class AuthController {
         .from(users)
         .where(
           or(
-            ilike(users.username, `%${search}%`),
-            ilike(users.email, `%${search}%`)
+            ilike(users.username, `%${query}%`),
+            ilike(users.email, `%${query}%`)
           )
         )
         .limit(parseInt(limit));
+
+      console.log(
+        "🚀 ~ AuthController ~ searchUsers ~ searchResults:",
+        searchResults
+      );
 
       // Get online status for each user
       const usersWithStatus = await Promise.all(
@@ -295,13 +290,17 @@ class AuthController {
           };
         })
       );
+      console.log(
+        "🚀 ~ AuthController ~ searchUsers ~ usersWithStatus:",
+        usersWithStatus
+      );
 
       res.json({
         success: true,
         data: usersWithStatus,
       });
     } catch (error) {
-      console.error("Search users error:", error);
+      console.log("Search users error:", error);
 
       res.status(500).json({
         success: false,

@@ -99,7 +99,9 @@ const NotificationCenter = ({ isOpen, onClose }) => {
     }
   }
   
-  const filteredNotifications = notifications?.filter(notification => {
+  // Convert Map to array and then filter
+  const notificationsArray = notifications ? Array.from(notifications.values()) : []
+  const filteredNotifications = notificationsArray.filter(notification => {
     if (filter === 'unread' && notification.isRead) return false
     if (filter === 'read' && !notification.isRead) return false
     if (typeFilter !== 'all' && notification.type !== typeFilter) return false
@@ -281,7 +283,7 @@ const NotificationCenter = ({ isOpen, onClose }) => {
               </button>
             )}
             
-            {notifications.length > 0 && (
+            {notificationsArray.length > 0 && (
               <button
                 onClick={handleClearAll}
                 className="flex-1 flex items-center justify-center px-3 py-2 text-sm text-red-600 dark:text-red-400 border border-red-600 dark:border-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900/20"

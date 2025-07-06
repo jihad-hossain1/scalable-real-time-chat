@@ -14,6 +14,7 @@ import messageRoutes from "./routes/message.js";
 import groupRoutes from "./routes/group.js";
 import userRoutes from "./routes/user.js";
 import callRoutes from "./routes/call.js";
+import notificationRoutes from "./routes/notification.js";
 
 // Load environment variables
 dotenv.config();
@@ -78,6 +79,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/calls", callRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // 404 handler
 app.use("*", (req, res) => {

@@ -10,7 +10,8 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
   const [showContextMenu, setShowContextMenu] = useState(null)
   const [filter, setFilter] = useState('all') // all, unread, archived
   
-  const { user } = useAuthStore()
+  const { user: userData } = useAuthStore()
+  const user = userData?.data
   const {
     conversations,
     isLoading,
@@ -38,7 +39,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
     }
   }, [searchQuery])
   
-  const filteredConversations = conversations.filter(conversation => {
+  const filteredConversations = conversations?.filter(conversation => {
     switch (filter) {
       case 'unread':
         return conversation.unreadCount > 0
@@ -49,7 +50,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
     }
   })
   
-  const sortedConversations = [...filteredConversations].sort((a, b) => {
+  const sortedConversations = [...filteredConversations]?.sort((a, b) => {
     // Pinned conversations first
     if (a.isPinned && !b.isPinned) return -1
     if (!a.isPinned && b.isPinned) return 1
@@ -320,7 +321,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
           <div className="flex justify-center items-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
           </div>
-        ) : sortedConversations.length === 0 ? (
+        ) : sortedConversations?.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-center p-4">
             <MessageSquare className="w-12 h-12 text-gray-400 mb-2" />
             <p className="text-gray-500 dark:text-gray-400 text-sm">
@@ -332,7 +333,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
           </div>
         ) : (
           <div className="group">
-            {sortedConversations.map(renderConversation)}
+            {sortedConversations?.map(renderConversation)}
           </div>
         )}
       </div>

@@ -78,7 +78,7 @@ router.post(
  */
 router.post(
   "/refresh",
-  authRateLimit,
+  // authRateLimit, // TODO: when production uncomment this
   validateBody(refreshTokenSchema),
   async (req, res, next) => {
     try {

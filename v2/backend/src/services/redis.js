@@ -1,4 +1,7 @@
-import { createClient } from 'redis';
+import { createClient } from "redis";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class RedisService {
   constructor() {
@@ -9,23 +12,23 @@ class RedisService {
 
   async connect() {
     try {
-      const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-      
+      const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+
       // Main client for general operations
       this.client = createClient({ url: redisUrl });
       await this.client.connect();
-      
+
       // Publisher client for pub/sub
       this.publisher = createClient({ url: redisUrl });
       await this.publisher.connect();
-      
+
       // Subscriber client for pub/sub
       this.subscriber = createClient({ url: redisUrl });
       await this.subscriber.connect();
-      
-      console.log('✅ Redis connected successfully');
+
+      console.log("✅ Redis connected successfully");
     } catch (error) {
-      console.error('❌ Redis connection failed:', error.message);
+      console.error("❌ Redis connection failed:", error.message);
       throw error;
     }
   }
@@ -33,20 +36,20 @@ class RedisService {
   // User presence management
   async setUserOnline(userId, socketId) {
     await this.client.hSet(`user:${userId}`, {
-      status: 'online',
+      status: "online",
       socketId,
-      lastSeen: Date.now()
+      lastSeen: Date.now(),
     });
-    await this.client.sAdd('online_users', userId);
+    await this.client.sAdd("online_users", userId);
   }
 
   async setUserOffline(userId) {
     await this.client.hSet(`user:${userId}`, {
-      status: 'offline',
-      lastSeen: Date.now()
+      status: "offline",
+      lastSeen: Date.now(),
     });
-    await this.client.sRem('online_users', userId);
-    await this.client.hDel(`user:${userId}`, 'socketId');
+    await this.client.sRem("online_users", userId);
+    await this.client.hDel(`user:${userId}`, "socketId");
   }
 
   async getUserStatus(userId) {
@@ -54,11 +57,11 @@ class RedisService {
   }
 
   async getOnlineUsers() {
-    return await this.client.sMembers('online_users');
+    return await this.client.sMembers("online_users");
   }
 
   async getUserSocketId(userId) {
-    return await this.client.hGet(`user:${userId}`, 'socketId');
+    return await this.client.hGet(`user:${userId}`, "socketId");
   }
 
   // Typing indicators
@@ -92,7 +95,11 @@ class RedisService {
 
   // Message caching
   async cacheMessage(messageId, messageData) {
-    await this.client.setEx(`message:${messageId}`, 3600, JSON.stringify(messageData));
+    await this.client.setEx(
+      `message:${messageId}`,
+      3600,
+      JSON.stringify(messageData)
+    );
   }
 
   async getCachedMessage(messageId) {
@@ -111,7 +118,7 @@ class RedisService {
         const data = JSON.parse(message);
         callback(data);
       } catch (error) {
-        console.error('Error parsing Redis message:', error);
+        console.error("Error parsing Redis message:", error);
       }
     });
   }
@@ -122,7 +129,11 @@ class RedisService {
 
   // Session management
   async setUserSession(userId, sessionData) {
-    await this.client.setEx(`session:${userId}`, 86400, JSON.stringify(sessionData)); // 24 hours
+    await this.client.setEx(
+      `session:${userId}`,
+      86400,
+      JSON.stringify(sessionData)
+    ); // 24 hours
   }
 
   async getUserSession(userId) {
@@ -148,7 +159,7 @@ class RedisService {
     try {
       await this.client.setEx(`call:${callId}`, ttl, JSON.stringify(callData));
     } catch (error) {
-      console.error('Error setting call data:', error);
+      console.error("Error setting call data:", error);
       throw error;
     }
   }
@@ -158,7 +169,7 @@ class RedisService {
       const data = await this.client.get(`call:${callId}`);
       return data ? JSON.parse(data) : null;
     } catch (error) {
-      console.error('Error getting call data:', error);
+      console.error("Error getting call data:", error);
       return null;
     }
   }
@@ -167,7 +178,7 @@ class RedisService {
     try {
       await this.client.del(`call:${callId}`);
     } catch (error) {
-      console.error('Error deleting call data:', error);
+      console.error("Error deleting call data:", error);
     }
   }
 
@@ -178,7 +189,7 @@ class RedisService {
       await this.client.ping();
       return true;
     } catch (error) {
-      console.error('Redis health check failed:', error);
+      console.error("Redis health check failed:", error);
       return false;
     }
   }
@@ -188,7 +199,7 @@ class RedisService {
     if (this.client) await this.client.disconnect();
     if (this.publisher) await this.publisher.disconnect();
     if (this.subscriber) await this.subscriber.disconnect();
-    console.log('Redis disconnected');
+    console.log("Redis disconnected");
   }
 }
 

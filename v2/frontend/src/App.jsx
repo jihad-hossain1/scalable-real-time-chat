@@ -113,7 +113,7 @@ const SettingsPage = () => {
 }
 
 function App() {
-  const { initialize, user } = useAuthStore()
+  const { initialize, user,token } = useAuthStore()
   const { initializeTheme } = useThemeStore()
   const socketService = useSocketService()
   
@@ -127,14 +127,14 @@ function App() {
   
   useEffect(() => {
     // Initialize socket connection when user is authenticated
-    if (user) {
-      socketService.connect()
+    if (token) {
+      socketService.connect(token)
       
       return () => {
         socketService.disconnect()
       }
     }
-  }, [user])
+  }, [token])
   
   return (
     <Router>

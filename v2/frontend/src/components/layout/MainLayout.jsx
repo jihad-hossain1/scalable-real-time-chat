@@ -6,16 +6,22 @@ import { useNotificationStore } from '../../stores/notificationStore'
 import { useThemeStore } from '../../stores/themeStore'
 import { NotificationCenter, ToastNotification } from '../notifications'
 import { ConversationList } from '../chat'
+import NewChatModal from '../modals/NewChatModal'
+import GlobalSearchModal from '../modals/GlobalSearchModal'
 
 const MainLayout = () => {
   const [showNotifications, setShowNotifications] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [selectedConversationId, setSelectedConversationId] = useState(null)
+  const [showNewChatModal, setShowNewChatModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false)
   
   const navigate = useNavigate()
   const location = useLocation()
   
-  const { user, logout, isLoading } = useAuthStore()
+  const { user: userData, logout, isLoading } = useAuthStore()
+  const user = userData?.data
+
   const { unreadCount, initialize: initializeNotifications } = useNotificationStore()
   const { theme, toggleTheme } = useThemeStore()
   
@@ -50,13 +56,17 @@ const MainLayout = () => {
   }
   
   const handleNewChat = () => {
-    // TODO: Implement new chat functionality
-    console.log('New chat')
+    setShowNewChatModal(true)
   }
   
   const handleSearch = () => {
-    // TODO: Implement global search
-    console.log('Global search')
+    setShowSearchModal(true)
+  }
+  
+  const handleNavigateToChat = (path) => {
+    navigate(path)
+    setShowNewChatModal(false)
+    setShowSearchModal(false)
   }
   
   if (isLoading) {
@@ -142,7 +152,7 @@ const MainLayout = () => {
             
             {/* User Menu */}
             {showUserMenu && (
-              <div className="absolute bottom-full right-0 mb-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
+              <div className="absolute bottom-full right-[-200px] mb-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
                 <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {user?.username}
@@ -214,6 +224,20 @@ const MainLayout = () => {
       
       {/* Toast Notifications */}
       <ToastNotification />
+      
+      {/* New Chat Modal */}
+      <NewChatModal
+        isOpen={showNewChatModal}
+        onClose={() => setShowNewChatModal(false)}
+        onNavigate={handleNavigateToChat}
+      />
+      
+      {/* Global Search Modal */}
+      <GlobalSearchModal
+        isOpen={showSearchModal}
+        onClose={() => setShowSearchModal(false)}
+        onNavigate={handleNavigateToChat}
+      />
       
       {/* Click outside to close menus */}
       {(showUserMenu || showNotifications) && (

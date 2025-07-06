@@ -69,16 +69,17 @@ const useAuthStore = create(
           console.log("🚀 ~ login: ~ response:", response);
 
           set((draft) => {
-            draft.user = response.user;
-            draft.token = response.token;
-            draft.refreshToken = response.refreshToken;
+            draft.user = response?.user;
+            draft.token = response?.data?.token;
+            draft.refreshToken = response?.data?.refreshToken;
             draft.isAuthenticated = true;
             draft.lastActivity = new Date().toISOString();
             draft.isLoading = false;
           });
 
           // Set token in auth service
-          authService.setToken(response.token);
+          authService.setToken(response?.data?.token);
+          authService.setAuthUser(response?.user);
 
           toast.success(`Welcome back, ${response.user.username}!`);
           console.log("✅ Login successful");
@@ -155,7 +156,7 @@ const useAuthStore = create(
         }
 
         // Clear auth service token
-        authService.clearToken();
+        authService.clearTokens();
 
         // Clear state
         set((draft) => {
@@ -192,7 +193,7 @@ const useAuthStore = create(
           });
 
           // Set new token in auth service
-          authService.setToken(response.token);
+          authService.setToken(response?.token);
 
           console.log("✅ Tokens refreshed successfully");
           return response;

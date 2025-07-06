@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import { db, users } from "../models/db.js";
 import { eq } from "drizzle-orm";
 import { redisService } from "./redis.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 class AuthService {
   constructor() {
