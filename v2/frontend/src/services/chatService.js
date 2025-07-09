@@ -5,16 +5,18 @@ const chatService = {
   getConversations: async (params = {}) => {
     try {
       const response = await apiService.paginated("/conversations", params);
-      return response.data;
+      return response?.data || [];
     } catch (error) {
       console.error("❌ Get conversations failed:", error);
       throw error;
     }
   },
 
-  getConversation: async (conversationId) => {
+  getConversation: async (conversation_id) => {
     try {
-      const response = await apiService.get(`/conversations/${conversationId}`);
+      const response = await apiService.get(
+        `/messages/conversations/${conversation_id}`
+      );
       return response.data;
     } catch (error) {
       console.error("❌ Get conversation failed:", error);
@@ -25,7 +27,7 @@ const chatService = {
   createConversation: async (conversationData) => {
     try {
       const response = await apiService.post(
-        "/conversations",
+        "/messages/conversations",
         conversationData
       );
       return response.data;
@@ -522,6 +524,7 @@ const chatService = {
   getUser: async (userId) => {
     try {
       const response = await apiService.get(`/users/${userId}`);
+      console.log("🚀 ~ getUser: ~ response:", response);
       return response.data;
     } catch (error) {
       console.error("❌ Get user failed:", error);

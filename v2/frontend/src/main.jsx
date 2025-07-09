@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { ErrorBoundary } from 'react-error-boundary'
+import { enableMapSet } from 'immer'
 import App from './App.jsx'
 import './index.css'
+
+// Enable Immer MapSet plugin for Zustand stores
+enableMapSet()
 
 // Error fallback component
 const ErrorFallback = ({ error, resetErrorBoundary }) => {

@@ -1,0 +1,1 @@
+ALTER TABLE "conversations" ALTER COLUMN "conversation_id" SET DEFAULT gen_random_uuid();

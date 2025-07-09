@@ -72,23 +72,30 @@ const useNotificationStore = create(
           type: state.typeFilter !== 'all' ? state.typeFilter : undefined
         })
         
+        // Handle both array response and paginated response
+        const notifications = Array.isArray(response) ? response : (response.data?.notifications || [])
+        
         set((draft) => {
           if (reset) {
             draft.notifications.clear()
           }
           
-          response.notifications.forEach(notification => {
+          notifications.forEach(notification => {
             draft.notifications.set(notification.id, notification)
           })
           
-          draft.hasMore = response.hasMore
-          draft.nextCursor = response.nextCursor
-          draft.unreadCount = response.unreadCount
+          // Handle pagination data if available
+          if (response && typeof response === 'object' && !Array.isArray(response)) {
+            draft.hasMore = response.data?.hasMore || false
+            draft.nextCursor = response.data?.nextCursor || null
+            draft.unreadCount = response.data?.unreadCount || draft.unreadCount
+          }
+          
           draft.isLoading = false
           draft.isLoadingMore = false
         })
         
-        console.log(`🔔 Loaded ${response.notifications.length} notifications`)
+        console.log(`🔔 Loaded ${notifications.length} notifications`)
         
       } catch (error) {
         console.error('❌ Failed to load notifications:', error)

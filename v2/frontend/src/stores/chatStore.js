@@ -48,17 +48,15 @@ const useChatStore = create(
           draft.conversationsError = null;
         });
 
-        const conversations = await chatService.getConversations();
+        const conversations = (await chatService.getConversations()) || [];
 
         set((draft) => {
           draft?.conversations?.clear();
-          conversations?.forEach((conv) => {
+          conversations.forEach((conv) => {
             draft.conversations.set(conv.id, conv);
           });
           draft.isLoadingConversations = false;
         });
-
-        console.log("📋 Loaded conversations:", conversations?.length);
       } catch (error) {
         console.error("❌ Failed to load conversations:", error);
         set((draft) => {
@@ -69,17 +67,14 @@ const useChatStore = create(
       }
     },
 
-    createConversation: async (
-      participantIds,
-      isGroup = false,
-      groupData = null
-    ) => {
+    createConversation: async ({ userId, receiverId }) => {
       try {
         const conversation = await chatService.createConversation({
-          participantIds,
-          isGroup,
-          ...groupData,
+          conversationType: "direct",
+          userId,
+          receiverId,
         });
+        console.log("🚀 ~ createConversation: ~ conversation:", conversation);
 
         set((draft) => {
           draft.conversations.set(conversation.id, conversation);

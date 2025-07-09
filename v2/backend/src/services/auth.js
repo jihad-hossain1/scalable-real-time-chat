@@ -239,6 +239,10 @@ class AuthService {
   // Get user by ID
   async getUserById(userId) {
     try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+
       const userResult = await db
         .select({
           id: users.id,
@@ -248,13 +252,17 @@ class AuthService {
           isOnline: users.isOnline,
           lastSeen: users.lastSeen,
           createdAt: users.createdAt,
+          updatedAt: users.updatedAt,
         })
         .from(users)
         .where(eq(users.id, userId))
         .limit(1);
 
-      return userResult[0] || null;
+      console.log("🚀 ~ AuthService ~ getUserById ~ userResult:", userResult);
+
+      return userResult.length > 0 ? userResult[0] : null;
     } catch (error) {
+      console.error("Get user by ID error:", error);
       throw error;
     }
   }

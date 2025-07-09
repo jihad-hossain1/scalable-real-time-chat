@@ -131,7 +131,8 @@ const MainLayout = () => {
           </button>
           
           <button
-            className="p-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            onClick={() => navigate('/settings')}
+            className="cursor-pointer p-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             title="Settings"
           >
             <Settings className="w-5 h-5" />
@@ -152,7 +153,7 @@ const MainLayout = () => {
             
             {/* User Menu */}
             {showUserMenu && (
-              <div className="absolute bottom-full right-[-200px] mb-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
+              <div className="absolute z-50 bottom-full right-[-200px] mb-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1">
                 <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {user?.username}
@@ -167,7 +168,7 @@ const MainLayout = () => {
                     setShowUserMenu(false)
                     navigate('/profile')
                   }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Profile
                 </button>
@@ -177,7 +178,7 @@ const MainLayout = () => {
                     setShowUserMenu(false)
                     navigate('/settings')
                   }}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Settings
                 </button>
@@ -189,7 +190,7 @@ const MainLayout = () => {
                     setShowUserMenu(false)
                     handleLogout()
                   }}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                  className="cursor-pointer w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Sign Out

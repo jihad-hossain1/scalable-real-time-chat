@@ -66,7 +66,6 @@ const useAuthStore = create(
           });
 
           const response = await authService.login(credentials);
-          console.log("🚀 ~ login: ~ response:", response);
 
           set((draft) => {
             draft.user = response?.user;
@@ -185,6 +184,7 @@ const useAuthStore = create(
           }
 
           const response = await authService.refreshToken(state.refreshToken);
+          console.log("🚀 ~ refreshTokens: ~ response:", response);
 
           set((draft) => {
             draft.token = response.token;

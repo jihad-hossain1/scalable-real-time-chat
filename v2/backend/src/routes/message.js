@@ -68,6 +68,43 @@ router.get("/conversation/:userId", async (req, res, next) => {
   }
 });
 
+router.get("/conversations", async (req, res, next) => {
+  try {
+    // Validate query parameters
+    const { error: queryError } = paginationSchema.validate(req.query);
+    if (queryError) {
+      return res.status(400).json({ error: queryError.details[0].message });
+    }
+    console.log("🚀 ~ router.get ~ queryError:", queryError);
+
+    await messageController.getConversations(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/conversations/:conversationId", async (req, res, next) => {
+  try {
+    await messageController.getConversationMessage(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post(
+  "/conversations",
+  // validateBody({
+  //   userIds: Joi.array().items(Joi.string().uuid()).min(1).required(),
+  // }),
+  async (req, res, next) => {
+    try {
+      await messageController.createConversation(req, res);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 /**
  * @route   GET /api/messages/group/:groupId
  * @desc    Get messages in a group conversation

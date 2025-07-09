@@ -11,7 +11,7 @@ import {
   ResetPasswordForm, 
   EmailVerificationForm 
 } from './components/auth'
-import { ChatInterface } from './components/chat'
+import { ChatInterface, NewChatPage } from './components/chat'
 import { ToastNotification } from './components/notifications'
 import CallInterface from './components/call/CallInterface'
 import IncomingCallModal from './components/call/IncomingCallModal'
@@ -162,6 +162,7 @@ function App() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="chat" element={<Dashboard />} />
+            <Route path="chat/new" element={<NewChatPage />} />
             <Route path="chat/:conversationId" element={<ChatInterface />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="settings" element={<SettingsPage />} />

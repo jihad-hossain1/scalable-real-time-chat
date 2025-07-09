@@ -216,9 +216,17 @@ class AuthController {
   // Get user by ID (for other users to view profiles)
   async getUserById(req, res) {
     try {
-      const { id } = req.params;
+      const { userId } = req.params;
 
-      const user = await authService.getUserById(id);
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          error: "User ID is required",
+          code: "MISSING_USER_ID",
+        });
+      }
+
+      const user = await authService.getUserById(userId);
 
       if (!user) {
         return res.status(404).json({
@@ -229,7 +237,7 @@ class AuthController {
       }
 
       // Get user status from Redis
-      const userStatus = await redisService.getUserStatus(id);
+      const userStatus = await redisService.getUserStatus(userId);
 
       res.json({
         success: true,
@@ -239,7 +247,7 @@ class AuthController {
           avatar: user.avatar,
           isOnline: user.isOnline,
           lastSeen: user.lastSeen,
-          socketStatus: userStatus.status || "offline",
+          socketStatus: userStatus?.status || "offline",
         },
       });
     } catch (error) {

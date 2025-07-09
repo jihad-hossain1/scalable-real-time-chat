@@ -91,6 +91,7 @@ const GlobalSearchModal = ({ isOpen, onClose, onNavigate }) => {
   }
   
   const handleResultClick = (type, item) => {
+    console.log("🚀 ~ handleResultClick ~ item:", item)
     if (type === 'message') {
       onNavigate?.(`/chat/${item.conversationId}?messageId=${item.id}`)
     } else if (type === 'conversation') {

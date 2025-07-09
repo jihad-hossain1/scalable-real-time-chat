@@ -13,7 +13,6 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
   const { user: userData } = useAuthStore()
   const user = userData?.data
   const {
-    conversations,
     isLoading,
     loadConversations,
     searchConversations,
@@ -22,8 +21,11 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
     deleteConversation,
     pinConversation,
     unpinConversation,
-    markAsRead
+    markAsRead,
+    getConversationsList
   } = useChatStore()
+  
+  const conversations = getConversationsList()
   
   useEffect(() => {
     loadConversations()
@@ -39,7 +41,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
     }
   }, [searchQuery])
   
-  const filteredConversations = conversations?.filter(conversation => {
+  const filteredConversations = conversations.filter(conversation => {
     switch (filter) {
       case 'unread':
         return conversation.unreadCount > 0
@@ -50,7 +52,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
     }
   })
   
-  const sortedConversations = [...filteredConversations]?.sort((a, b) => {
+  const sortedConversations = [...filteredConversations].sort((a, b) => {
     // Pinned conversations first
     if (a.isPinned && !b.isPinned) return -1
     if (!a.isPinned && b.isPinned) return 1
@@ -105,7 +107,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
   }
   
   const getConversationName = (conversation) => {
-    if (conversation.type === CONVERSATION_TYPES.GROUP) {
+    if (conversation.type == CONVERSATION_TYPES.GROUP) {
       return conversation.name
     }
     
@@ -115,7 +117,7 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
   }
   
   const getConversationAvatar = (conversation) => {
-    if (conversation.type === CONVERSATION_TYPES.GROUP) {
+    if (conversation.type == CONVERSATION_TYPES.GROUP) {
       return conversation.avatar || '/default-group-avatar.png'
     }
     
@@ -147,8 +149,8 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
   }
   
   const renderConversation = (conversation) => {
-    const isSelected = conversation.id === selectedConversationId
-    const isOnline = conversation.type === CONVERSATION_TYPES.DIRECT && 
+    const isSelected = conversation.id == selectedConversationId
+    const isOnline = conversation.type == CONVERSATION_TYPES.DIRECT && 
       conversation.participants?.find(p => p.id !== user.id)?.isOnline
     
     return (
@@ -321,12 +323,12 @@ const ConversationList = ({ onSelectConversation, selectedConversationId }) => {
           <div className="flex justify-center items-center h-32">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
           </div>
-        ) : sortedConversations?.length === 0 ? (
+        ) : sortedConversations?.length == 0 ? (
           <div className="flex flex-col items-center justify-center h-32 text-center p-4">
             <MessageSquare className="w-12 h-12 text-gray-400 mb-2" />
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              {filter === 'unread' ? 'No unread conversations' :
-               filter === 'archived' ? 'No archived conversations' :
+              {filter == 'unread' ? 'No unread conversations' :
+               filter == 'archived' ? 'No archived conversations' :
                searchQuery ? 'No conversations found' : 'No conversations yet'
               }
             </p>
